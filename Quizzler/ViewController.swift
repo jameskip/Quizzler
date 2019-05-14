@@ -24,6 +24,7 @@ class ViewController: UIViewController {
 
         let firstQuestion = allQuestions.list[0]
         questionLabel.text = firstQuestion.questionText
+        updateUI()
     }
 
     @IBAction func answerPressed(_ sender: AnyObject) {
@@ -34,6 +35,7 @@ class ViewController: UIViewController {
 
     func updateUI() {
         questionLabel.text = allQuestions.list[questionNumber].questionText
+        progressLabel.text = "\(questionNumber + 1)/13"
     }
 
     func nextQuestion() {
