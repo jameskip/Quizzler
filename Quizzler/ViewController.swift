@@ -10,8 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let allQuestions = QuestionBank()
-    var pickedQuestion: Bool = false
+    let allQuestions: QuestionBank = QuestionBank()
+    var pickedAnswer: Bool = false
+    var questionNumber: Int = 0
 
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var scoreLabel: UILabel!
@@ -21,29 +22,48 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let firstQuestion = allQuestions.list[0]
+        questionLabel.text = firstQuestion.questionText
     }
 
     @IBAction func answerPressed(_ sender: AnyObject) {
-        if sender.tag == 1 {
-
-        }
-        // else if 
+        checkAnswer(tag: sender.tag, correctAnswer: allQuestions.list[questionNumber].answer)
+        questionNumber += 1
+        nextQuestion()
     }
 
     func updateUI() {
-
+        questionLabel.text = allQuestions.list[questionNumber].questionText
     }
 
     func nextQuestion() {
-
+        if questionNumber <= 12 {
+            updateUI()
+        } else {
+            let alert = UIAlertController(title: "Awesome!", message: "You have finished! Do you want to start over?", preferredStyle: .actionSheet)
+            let restartAction = UIAlertAction(title: "Restart", style: .default, handler: {(UIAlertAction) in self.startOver()})
+            alert.addAction(restartAction)
+            present(alert, animated: true, completion: nil)
+        }
     }
 
-    func checkAnswer() {
+    func checkAnswer(tag: Int, correctAnswer: Bool) {
+        if tag == 1 {
+            pickedAnswer = true
+        } else if tag == 2 {
+            pickedAnswer = false
+        }
 
+        if pickedAnswer == correctAnswer {
+            print("you got it right!")
+        } else {
+            print("better luck next time")
+        }
     }
 
     func startOver() {
-
+        questionNumber = 0
+        updateUI()
     }
 
 }
